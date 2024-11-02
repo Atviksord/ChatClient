@@ -1,0 +1,1 @@
+// Manages individual chat rooms

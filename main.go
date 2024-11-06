@@ -36,17 +36,15 @@ func main() {
 	}
 	// initialize database queries(SQL)
 	dbQueries := database.New(db)
-	cfg := &apiconfig{
+	cfg := &apiConfig{
 		db: dbQueries,
 	}
 
 	PORT := os.Getenv("PORT")
 	IP := os.Getenv("IP")
 
-	serverIP := "0.0.0.0:8080"
-
 	mux := http.NewServeMux()
-	servr := http.Server{Addr: serverIP, Handler: mux}
+	servr := http.Server{Addr: PORT + ":" + IP, Handler: mux}
 
 	handlerRegistry(mux)
 

@@ -8,11 +8,12 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
+	"github.com/pressly/goose/v3/database"
 )
 
 // struct to keep DB, ENV info etc
 type apiConfig struct {
-	db string
+	db *database.dbQueries
 }
 
 func main() {
@@ -34,7 +35,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("Error pinging database: %v", err)
 	}
-	// initialize database queries(SQL)
+	// initialize database queries and store in struct
 	dbQueries := database.New(db)
 	cfg := &apiConfig{
 		db: dbQueries,
@@ -46,7 +47,7 @@ func main() {
 	mux := http.NewServeMux()
 	servr := http.Server{Addr: PORT + ":" + IP, Handler: mux}
 
-	handlerRegistry(mux)
+	go handlerRegistry(mux)
 
 	err = servr.ListenAndServe()
 	if err != nil {

@@ -3,6 +3,12 @@ package main
 
 import "net/http"
 
-func handlerRegistry(mux http.Handler) {
+func (cfg *apiConfig) handlerRegistry(mux http.Handler) {
+
+	http.HandleFunc("GET /", cfg.startHandler)
+
+}
+
+func (cfg *apiConfig) startHandler(w http.ResponseWriter, r *http.Request) {
 
 }

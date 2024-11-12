@@ -47,7 +47,7 @@ func main() {
 	mux := http.NewServeMux()
 	servr := http.Server{Addr: PORT + ":" + IP, Handler: mux}
 
-	go handlerRegistry(mux)
+	go cfg.handlerRegistry(mux)
 
 	err = servr.ListenAndServe()
 	if err != nil {

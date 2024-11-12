@@ -3,12 +3,13 @@ package main
 
 import "net/http"
 
-func (cfg *apiConfig) handlerRegistry(mux http.Handler) {
+func (cfg *apiConfig) handlerRegistry(mux *http.ServeMux) {
 
-	http.HandleFunc("GET /", cfg.startHandler)
+	mux.HandleFunc("GET /", cfg.startHandler)
 
 }
 
 func (cfg *apiConfig) startHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-type:")
 
 }

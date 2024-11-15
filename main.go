@@ -7,13 +7,14 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/Atviksord/ChatClient/internal/database"
 	"github.com/joho/godotenv"
 	"github.com/pressly/goose/v3/database"
 )
 
 // struct to keep DB, ENV info etc
 type apiConfig struct {
-	db *database.dbQueries
+	db *database.Queries
 }
 
 func main() {

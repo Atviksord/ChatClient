@@ -9,7 +9,7 @@ import (
 
 	"github.com/Atviksord/ChatClient/internal/database"
 	"github.com/joho/godotenv"
-	"github.com/pressly/goose/v3/database"
+	_ "github.com/lib/pq"
 )
 
 // struct to keep DB, ENV info etc
@@ -46,7 +46,7 @@ func main() {
 	IP := os.Getenv("IP")
 
 	mux := http.NewServeMux()
-	servr := http.Server{Addr: PORT + ":" + IP, Handler: mux}
+	servr := http.Server{Addr: IP + ":" + PORT, Handler: mux}
 
 	go cfg.handlerRegistry(mux)
 

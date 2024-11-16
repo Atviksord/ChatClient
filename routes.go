@@ -10,6 +10,5 @@ func (cfg *apiConfig) handlerRegistry(mux *http.ServeMux) {
 }
 
 func (cfg *apiConfig) startHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-type:")
 
 }

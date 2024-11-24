@@ -49,8 +49,9 @@ func main() {
 	servr := http.Server{Addr: IP + ":" + PORT, Handler: mux}
 
 	go cfg.handlerRegistry(mux)
-
+	fmt.Println("server running on IP", IP)
 	err = servr.ListenAndServe()
+
 	if err != nil {
 		log.Fatal("Couldnt start server", err)
 	}

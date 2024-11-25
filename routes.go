@@ -2,6 +2,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 	"time"
 
@@ -15,6 +16,11 @@ func (cfg *apiConfig) handlerRegistry(mux *http.ServeMux) {
 }
 
 func (cfg *apiConfig) startHandler(w http.ResponseWriter, r *http.Request) {
-	websocket.Upgrader{HandshakeTimeout: time.Minute * 10, ReadBufferSize: 10, WriteBufferSize: 10}
-
+	upper := websocket.Upgrader{HandshakeTimeout: time.Minute * 10, ReadBufferSize: 0, WriteBufferSize: 0, CheckOrigin: nil}
+	connection, err := upper.Upgrade(w, r, nil)
+	if err != nil {
+		log.Printf("WebSocket upgrade failed: %v", err)
+		return
+	}
+	defer connection.Close()
 }

@@ -12,6 +12,7 @@ import (
 func (cfg *apiConfig) handlerRegistry(mux *http.ServeMux) {
 
 	mux.HandleFunc("GET /", cfg.startHandler)
+	mux.HandleFunc("GET /establishConnection", cfg.establishConnectionHandler)
 
 }
 
@@ -23,4 +24,9 @@ func (cfg *apiConfig) startHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer connection.Close()
+}
+
+// Function that establishes connection between clients
+func (cfg *apiConfig) establishConnectionHandler(w http.ResponseWriter, r http.Request) {
+
 }

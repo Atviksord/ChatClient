@@ -24,9 +24,10 @@ func (cfg *apiConfig) startHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	defer connection.Close()
+
 }
 
 // Function that establishes connection between clients
-func (cfg *apiConfig) establishConnectionHandler(w http.ResponseWriter, r http.Request) {
+func (cfg *apiConfig) establishConnectionHandler(w http.ResponseWriter, r *http.Request) {
 
 }

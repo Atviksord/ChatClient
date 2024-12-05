@@ -23,6 +23,18 @@ func (cfg *apiConfig) startHandler(w http.ResponseWriter, r *http.Request) {
 		log.Printf("WebSocket upgrade failed: %v", err)
 		return
 	}
+	// if connection is properly upgraded send it into a goroutine.
+	go func(connection *websocket.Conn) {
+		for {
+			msgType, msg, err := connection.ReadMessage()
+			if err != nil {
+				log.Println("Connection closed", err)
+				break
+			}
+			log.Printf("Received: %s", msg)
+			connection.WriteMessage(msgType, msg)
+		}
+	}(connection)
 	defer connection.Close()
 
 }

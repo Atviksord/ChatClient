@@ -6,15 +6,19 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"sync"
 
 	"github.com/Atviksord/ChatClient/internal/database"
+	"github.com/gorilla/websocket"
 	"github.com/joho/godotenv"
 	_ "github.com/lib/pq"
 )
 
-// struct to keep DB, ENV info etc
+// struct to keep DB, ENV, and connections
 type apiConfig struct {
-	db *database.Queries
+	db          *database.Queries
+	connections map[int]*websocket.Conn
+	mu          sync.Mutex
 }
 
 func main() {

@@ -12,11 +12,17 @@ import (
 func (cfg *apiConfig) handlerRegistry(mux *http.ServeMux) {
 
 	mux.HandleFunc("GET /", cfg.startHandler)
-	mux.HandleFunc("GET /establishConnection", cfg.establishConnectionHandler)
+	mux.HandleFunc("GET /ws", cfg.establishConnectionHandler)
 
 }
 
 func (cfg *apiConfig) startHandler(w http.ResponseWriter, r *http.Request) {
+	// auth check
+
+}
+
+// Function that establishes the websocket upgrade
+func (cfg *apiConfig) establishConnectionHandler(w http.ResponseWriter, r *http.Request) {
 	upper := websocket.Upgrader{HandshakeTimeout: time.Minute * 10, ReadBufferSize: 0, WriteBufferSize: 0, CheckOrigin: nil}
 	connection, err := upper.Upgrade(w, r, nil)
 	if err != nil {
@@ -36,10 +42,4 @@ func (cfg *apiConfig) startHandler(w http.ResponseWriter, r *http.Request) {
 		}
 	}(connection)
 	defer connection.Close()
-
-}
-
-// Function that establishes connection between clients
-func (cfg *apiConfig) establishConnectionHandler(w http.ResponseWriter, r *http.Request) {
-
 }

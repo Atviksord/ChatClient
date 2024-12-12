@@ -9,13 +9,18 @@ import (
 	"context"
 )
 
-const selectUser = `-- name: SelectUser :one
-SELECT id, username, password, role, status, created_at, updated_at from users
-WHERE username = $1
+const loginUser = `-- name: LoginUser :one
+SELECT id, username, password, role, status, created_at, updated_at, api_key from users
+WHERE username = $1 AND password = $2
 `
 
-func (q *Queries) SelectUser(ctx context.Context, username string) (User, error) {
-	row := q.db.QueryRowContext(ctx, selectUser, username)
+type LoginUserParams struct {
+	Username string
+	Password string
+}
+
+func (q *Queries) LoginUser(ctx context.Context, arg LoginUserParams) (User, error) {
+	row := q.db.QueryRowContext(ctx, loginUser, arg.Username, arg.Password)
 	var i User
 	err := row.Scan(
 		&i.ID,
@@ -25,6 +30,7 @@ func (q *Queries) SelectUser(ctx context.Context, username string) (User, error)
 		&i.Status,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.ApiKey,
 	)
 	return i, err
 }

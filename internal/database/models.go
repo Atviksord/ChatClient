@@ -31,6 +31,7 @@ type User struct {
 	Status    sql.NullString
 	CreatedAt time.Time
 	UpdatedAt time.Time
+	ApiKey    sql.NullString
 }
 
 type UserRoom struct {

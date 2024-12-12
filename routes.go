@@ -3,6 +3,8 @@ package main
 
 import (
 	"bufio"
+	"context"
+	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
@@ -35,15 +37,46 @@ func (cfg *apiConfig) startHandler(w http.ResponseWriter, r *http.Request) {
 		password, _ := reader.ReadString('\n')
 		password = strings.TrimSpace(password)
 
-		cfg.db.CreateUser(r.Context(),
+		_, err := cfg.db.CreateUser(r.Context(),
 			database.CreateUserParams{Username: username,
 				Password:  password,
 				CreatedAt: time.Now().UTC(),
 				UpdatedAt: time.Now().UTC()})
+		if err != nil {
+			fmt.Println("User Creation failed ")
+		}
 		break
 
 	}
-	// Will create a cookie to validate login next
+	// Login sequence
+	for {
+		fmt.Print("Enter username: ")
+		username, _ := reader.ReadString('\n')
+		username = strings.TrimSpace(username)
+
+		fmt.Print("Password please:")
+		password, _ := reader.ReadString('\n')
+		password = strings.TrimSpace(password)
+
+		user, err := cfg.db.LoginUser(context.Background(),
+			database.LoginUserParams{Username: username,
+				Password: password})
+		if err != nil {
+			fmt.Println("Login failed")
+			return
+		}
+		apiKey, err := generateAPIKey()
+		if err != nil {
+			fmt.Println("Error generating API key:", err)
+			return
+		}
+		fmt.Println("Generated API Key:", apiKey)
+		cfg.db.AddApikey(context.Background(),
+			database.AddApikeyParams{ApiKey: sql.NullString{String: apiKey, Valid: true},
+				Username: username})
+
+	}
+	// Login initiated right after creation
 
 }
 

@@ -1,3 +1,3 @@
--- name: SelectUser :one
+-- name: LoginUser :one
 SELECT * from users
-WHERE username = $1;
+WHERE username = $1 AND password = $2;

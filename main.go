@@ -19,6 +19,13 @@ type apiConfig struct {
 	db          *database.Queries
 	connections map[int]*websocket.Conn
 	mu          sync.Mutex
+	commands    map[string]commandBlock
+}
+
+type commandBlock struct {
+	name        string
+	description string
+	callback    func(*apiConfig) error
 }
 
 func main() {
@@ -42,6 +49,7 @@ func main() {
 	}
 	// initialize database queries and store in struct
 	dbQueries := database.New(db)
+
 	cfg := &apiConfig{
 		db: dbQueries,
 	}

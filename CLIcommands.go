@@ -1,5 +1,10 @@
 package main
 
+import (
+	"fmt"
+	"os"
+)
+
 func (cfg *apiConfig) getCommands() map[string]commandBlock {
 
 	return map[string]commandBlock{
@@ -30,4 +35,21 @@ func (cfg *apiConfig) getCommands() map[string]commandBlock {
 			callback:    commandSignup,
 		},
 	}
+}
+
+func commandHelp(cfg *apiConfig) error {
+	for _, v := range cfg.commands {
+		fmt.Println("---------")
+		fmt.Printf("%s: %s", v.name, v.description)
+	}
+	return nil
+}
+func commandExit(cfg *apiConfig) error {
+	os.Exit(0)
+
+	return nil
+}
+func commandLogout(cfg *apiConfig) error {
+	// System design: remove API key from user DB
+	return nil
 }

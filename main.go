@@ -53,6 +53,7 @@ func main() {
 	cfg := &apiConfig{
 		db: dbQueries,
 	}
+	cfg.commands = cfg.getCommands()
 
 	PORT := os.Getenv("PORT")
 	IP := os.Getenv("IP")

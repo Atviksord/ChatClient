@@ -3,8 +3,6 @@ package main
 
 import (
 	"bufio"
-	"context"
-	"database/sql"
 	"fmt"
 	"log"
 	"net/http"
@@ -12,7 +10,6 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Atviksord/ChatClient/internal/database"
 	"github.com/gorilla/websocket"
 )
 
@@ -27,7 +24,12 @@ func (cfg *apiConfig) startHandler(w http.ResponseWriter, r *http.Request) {
 	// auth check
 
 	// if not authed, infinite loop awaiting server commands
+	reader := bufio.NewReader(os.Stdin)
+	fmt.Println("Type 'help' for list of commands")
 	for {
+		fmt.Print("Enter Command: ")
+		command, _ := reader.ReadString('\n')
+		command = strings.TrimSpace(command)
 
 	}
 

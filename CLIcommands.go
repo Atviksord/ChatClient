@@ -32,8 +32,8 @@ func (cfg *apiConfig) getCommands() map[string]commandBlock {
 			callback:    commandLogout,
 		},
 		"login": {
-			name:        "logout",
-			description: "logs you out",
+			name:        "login",
+			description: "logs you in",
 			callback:    commandLogin,
 		},
 		"signup": {
@@ -67,7 +67,7 @@ func commandSignup(cfg *apiConfig) error {
 		password, _ := reader.ReadString('\n')
 		password = strings.TrimSpace(password)
 
-		_, err := cfg.db.CreateUser(r.Context(),
+		_, err := cfg.db.CreateUser(context.Background(),
 			database.CreateUserParams{Username: username,
 				Password:  password,
 				CreatedAt: time.Now().UTC(),
@@ -92,12 +92,12 @@ func commandLogin(cfg *apiConfig) error {
 		fmt.Print("Password please:")
 		password, _ := reader.ReadString('\n')
 		password = strings.TrimSpace(password)
-
-		user, err := cfg.db.LoginUser(context.Background(),
+		// Will return user data for auth endpoints later
+		_, err := cfg.db.LoginUser(context.Background(),
 			database.LoginUserParams{Username: username,
 				Password: password})
 		if err != nil {
-			fmt.Println("Login failed")
+			fmt.Println("Login failed, Either password or Username wrong", err)
 			return err
 		}
 		apiKey, err := generateAPIKey()
@@ -116,4 +116,8 @@ func commandLogin(cfg *apiConfig) error {
 
 	}
 
+}
+func commandLogout(cfg *apiConfig) error {
+	fmt.Println("LogoutHit test")
+	return nil
 }

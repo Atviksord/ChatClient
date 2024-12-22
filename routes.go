@@ -31,6 +31,14 @@ func (cfg *apiConfig) startHandler(w http.ResponseWriter, r *http.Request) {
 		command, _ := reader.ReadString('\n')
 		command = strings.TrimSpace(command)
 
+		commandMap := cfg.getCommands()
+
+		for _, v := range commandMap {
+			if command == v.name {
+				v.callback(cfg)
+			}
+		}
+
 	}
 
 }

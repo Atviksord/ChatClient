@@ -58,24 +58,21 @@ func commandExit(cfg *apiConfig) error {
 }
 func commandSignup(cfg *apiConfig) error {
 	reader := bufio.NewReader(os.Stdin)
-	for {
-		fmt.Print("Enter username: ")
-		username, _ := reader.ReadString('\n')
-		username = strings.TrimSpace(username)
+	fmt.Print("Enter username: ")
+	username, _ := reader.ReadString('\n')
+	username = strings.TrimSpace(username)
 
-		fmt.Print("Password please:")
-		password, _ := reader.ReadString('\n')
-		password = strings.TrimSpace(password)
+	fmt.Print("Password please:")
+	password, _ := reader.ReadString('\n')
+	password = strings.TrimSpace(password)
 
-		_, err := cfg.db.CreateUser(context.Background(),
-			database.CreateUserParams{Username: username,
-				Password:  password,
-				CreatedAt: time.Now().UTC(),
-				UpdatedAt: time.Now().UTC()})
-		if err != nil {
-			fmt.Println("User Creation failed ")
-		}
-		break
+	_, err := cfg.db.CreateUser(context.Background(),
+		database.CreateUserParams{Username: username,
+			Password:  password,
+			CreatedAt: time.Now().UTC(),
+			UpdatedAt: time.Now().UTC()})
+	if err != nil {
+		fmt.Println("User Creation failed ")
 
 	}
 
